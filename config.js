@@ -1,0 +1,1 @@
+export default NASA_API_KEY = "Nx4FmtPcWVyvx4Hutzdgx40jH6gITruek55ccTCG"

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -8,7 +9,7 @@ import {
   Button,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import NASA_API_KEY from '../config';
 
 type formTypes = {
   navigation: any;
@@ -16,9 +17,6 @@ type formTypes = {
 
 function Home({navigation}: formTypes): JSX.Element {
   const [text, setText] = useState('');
-  const backgroundStyle = {
-    backgroundColor: Colors.darker,
-  };
   const onPressSubmit = () => {
     navigation.navigate('asteriod-details', {
         asteriodId: text,
@@ -29,6 +27,23 @@ function Home({navigation}: formTypes): JSX.Element {
     setText(val);
   };
 
+  const onRandamButtonClick = async() => {
+    try{
+        let x = Math.random() * 100;
+        const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=${NASA_API_KEY}`)
+        // const id = response.data.near_earth_objects[x].id;
+        const length = (response.data.near_earth_objects.length);
+        const randamNumber = Math.floor(Math.random() * (length - 0 + 1) + 0);
+        const id = (response.data.near_earth_objects[randamNumber]["id"])
+        navigation.navigate('asteriod-details', {
+          asteriodId: id,
+      });
+
+    }catch(e){
+      console.log(e);
+    }
+  }
+
   return (
     <SafeAreaView >
       <View style={styles.sectionContainer}>
@@ -36,14 +51,19 @@ function Home({navigation}: formTypes): JSX.Element {
           style={styles.input}
           onChangeText={onChangeText}
           value={text}
-          placeholder="please enter asteiod id"
+          placeholder="Enter Asteroid ID"
           data-testid="text-input"
         />
         <Button
-          title="get asteriod info"
+          title="Submit"
           disabled={text === '' ? true : false}
           onPress={onPressSubmit}
           data-testid="submit-button"
+        />
+        <Button
+          title="Random Asteroid"
+          onPress={onRandamButtonClick}
+          data-testid="random-button"
         />
       </View>
     </SafeAreaView>

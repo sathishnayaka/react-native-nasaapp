@@ -6,10 +6,8 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  useColorScheme,
 } from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import NASA_API_KEY from '../config';
 
 type formTypes = {
   navigation: any;
@@ -26,7 +24,7 @@ const AsteriodDetails = ({navigation, route}: formTypes) => {
 
   const getWeatherDetails = async () => {
     try{
-      const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/neo/${asteriodId}?api_key=Nx4FmtPcWVyvx4Hutzdgx40jH6gITruek55ccTCG`);
+      const response = await axios.get(`https://api.nasa.gov/neo/rest/v1/neo/${asteriodId}?api_key=${NASA_API_KEY}`);
     console.log(response.data);
     setNasaJplUrl(response.data.nasa_jpl_url);
     setName(response.data.name);
